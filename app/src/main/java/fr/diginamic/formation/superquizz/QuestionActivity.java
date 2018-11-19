@@ -9,13 +9,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class QuestionActivity extends AppCompatActivity {
-    public static String INDEX = "index_question";
-    public static String SCORE = "score";
     private ArrayList<Question> listeQuestions;
-    Button answer1 = findViewById(R.id.answer_1);
-    Button answer2 = findViewById(R.id.answer_2);
-    Button answer3 = findViewById(R.id.answer_3);
-    Button answer4 = findViewById(R.id.answer_4);
+    private Question question;
+    private Button answer1;
+    private Button answer2;
+    private Button answer3;
+    private Button answer4;
     private int index;
     private int score;
 
@@ -26,30 +25,39 @@ public class QuestionActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        initActivity();
+
+    }
+
+    private void verifyAnswer(Question question, int answer){
+        if(question.getBonneReponse() == answer){
+            score += question.getPoint();
+        }
+        if (index == listeQuestions.size() - 1){
+            Intent resultIntent = new Intent(this, ResultActivity.class);
+            resultIntent.putExtra(ResultActivity.SCORE, score);
+            startActivity(resultIntent);
+        }else {
+            index++;
+            loadContentQuestion();
+        }
+    }
+
+    public  void initActivity(){
         index = 0;
         score = 0;
         QuestionMemDao questionMemDao = new QuestionMemDao();
 
         listeQuestions = questionMemDao.findAll();
 
-        if(getIntent() != null){
-            index = getIntent().getIntExtra(this.INDEX, 0);
-            score = getIntent().getIntExtra(this.SCORE, 0);
-        }
+        question = listeQuestions.get(index);
 
-        Question question = listeQuestions.get(index);
+        answer1 = findViewById(R.id.answer_1);
+        answer2 = findViewById(R.id.answer_2);
+        answer3 = findViewById(R.id.answer_3);
+        answer4 = findViewById(R.id.answer_4);
 
-        ((TextView) findViewById(R.id.question)).setText(question.getIntitule());
-
-        Button answer1 = findViewById(R.id.answer_1);
-        Button answer2 = findViewById(R.id.answer_2);
-        Button answer3 = findViewById(R.id.answer_3);
-        Button answer4 = findViewById(R.id.answer_4);
-
-        answer1.setText(question.getProposition(0));
-        answer2.setText(question.getProposition(1));
-        answer3.setText(question.getProposition(2));
-        answer4.setText(question.getProposition(3));
+        loadContentQuestion();
 
         answer1.setOnClickListener(v -> verifyAnswer(question, 1));
         answer2.setOnClickListener(v -> verifyAnswer(question, 2));
@@ -57,20 +65,15 @@ public class QuestionActivity extends AppCompatActivity {
         answer4.setOnClickListener(v -> verifyAnswer(question, 4));
     }
 
-    private void verifyAnswer(Question question, int answer){
-        Intent resultIntent;
-        if (index == listeQuestions.size() - 1){
-            resultIntent = new Intent(this, ResultActivity.class);
-        }else{
-            resultIntent = new Intent(this, QuestionActivity.class);
-            resultIntent.putExtra(QuestionActivity.INDEX, index+1);
-        }
-        if(question.getBonneReponse() == answer){
-            resultIntent.putExtra(QuestionActivity.SCORE, score + question.getPoint());
-        }else{
-            resultIntent.putExtra(QuestionActivity.SCORE, score);
-        }
-        startActivity(resultIntent);
+    public void loadContentQuestion(){
+        question = listeQuestions.get(index);
+
+        ((TextView) findViewById(R.id.question)).setText(question.getIntitule());
+
+        answer1.setText(question.getProposition(0));
+        answer2.setText(question.getProposition(1));
+        answer3.setText(question.getProposition(2));
+        answer4.setText(question.getProposition(3));
     }
-    
+
 }
