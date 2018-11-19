@@ -8,9 +8,9 @@ public class Question {
     private int bonneReponse;
     private TypeQuestion type;
 
-    public Question(String intitule, int nbReponse) {
+    public Question(String intitule) {
         this.intitule = intitule;
-        this.propositions = new ArrayList<String>(nbReponse);
+        this.propositions = new ArrayList<String>(4);
     }
 
     public Boolean verifierReponse(int reponse){
@@ -66,10 +66,6 @@ public class Question {
         }else{
             return 1;
         }
-    }
-
-    public int getNbPropositions() {
-        return this.propositions.size();
     }
 
     public String toString() {
