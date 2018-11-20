@@ -26,6 +26,10 @@
         <activity
             android:name=".ResultActivity"
             android:label="@string/title_activity_result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddQuestionActivity"
+            android:label="@string/title_activity_add_question"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
