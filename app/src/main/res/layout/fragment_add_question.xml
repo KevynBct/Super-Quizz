@@ -10,14 +10,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="287dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/layoutFood1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <EditText
             android:id="@+id/add_question_intitule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:maxLines="3"
             android:hint="@string/add_question_text" />
-
+        </android.support.design.widget.TextInputLayout>
 
 
         <EditText
