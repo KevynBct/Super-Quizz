@@ -18,40 +18,66 @@
             android:maxLines="3"
             android:hint="@string/add_question_text" />
 
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/answer_radio_group"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="100dp">
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radio_answer_1"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radio_answer_3"/>
-
-            <RadioButton
-                android:id="@+id/radio_answer_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/radio_answer_4"/>
-        </RadioGroup>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/edit_answer_1"
             android:hint="Proposition 1"
+            android:layout_above="@+id/edit_answer_2"
+            android:layout_centerInParent="true"
             />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_answer_2"
+            android:hint="Proposition 2"
+            android:layout_centerInParent="true"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_answer_3"
+            android:hint="Proposition 3"
+            android:layout_below="@+id/edit_answer_2"
+            android:layout_centerInParent="true"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_answer_4"
+            android:hint="Proposition 4"
+            android:layout_below="@+id/edit_answer_3"
+            android:layout_centerInParent="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_answer_choice"
+            android:layout_marginTop="10dip"
+            android:text="Bonne réponse :"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/edit_answer_4"
+            android:layout_centerHorizontal="true"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_answer_choice"
+            android:layout_below="@+id/text_answer_choice"
+            android:layout_alignStart="@id/text_answer_choice">
+        </Spinner>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_add_black_24dp"/>
 
     </RelativeLayout>
 

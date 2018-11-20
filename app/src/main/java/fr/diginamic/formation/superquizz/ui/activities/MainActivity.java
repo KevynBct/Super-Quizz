@@ -1,13 +1,7 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,11 +13,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.model.Question;
+import fr.diginamic.formation.superquizz.ui.fragments.AddQuestionFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.PlayFragment;
+import fr.diginamic.formation.superquizz.ui.fragments.QuestionListFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.ScoreFragment;
+import fr.diginamic.formation.superquizz.ui.fragments.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener, ScoreFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,
+        ScoreFragment.OnFragmentInteractionListener, AddQuestionFragment.OnFragmentInteractionListener,
+        QuestionListFragment.OnListFragmentInteractionListener {
     private final String CURRENT_FRAGMENT = "current_fragment";
     private int idFragment = 0;
 
@@ -58,19 +58,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -81,21 +76,19 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_play) {
-            FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
-            PlayFragment fragment = new PlayFragment();
-            fragmentTransaction.replace(R.id.fragmentLayout, fragment);
-            fragmentTransaction.commit();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
             idFragment = 0;
         } else if (id == R.id.nav_add) {
-
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new AddQuestionFragment()).commit();
+            idFragment = 1;
         } else if (id == R.id.nav_list) {
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment()).commit();
+            idFragment = 2;
 
         } else if (id == R.id.nav_delete) {
-            Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show();
 
         } else if (id == R.id.nav_score) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
@@ -121,17 +114,26 @@ public class MainActivity extends AppCompatActivity
                     idFragment = 0;
                     break;
                 }
+                case 1 : {
+                    this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new AddQuestionFragment()).commit();
+                    idFragment = 1;
+                    break;
+                }
+                case 2 : {
+                    this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment()).commit();
+                    idFragment = 2;
+                    break;
+                }
                 case 4 : {
                     this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
                     idFragment = 4;
                     break;
                 }
                 default: {
-                    this.getSupportFragmentManager().beginTransaction().add(R.id.fragmentLayout, new PlayFragment()).commit();
+                    this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
                     break;
                 }
             }
-
         }else {
             this.getSupportFragmentManager().beginTransaction().add(R.id.fragmentLayout, new PlayFragment()).commit();
         }
@@ -145,5 +147,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(Question question) {
+        Toast.makeText(this, "Question", Toast.LENGTH_SHORT).show();
     }
 }

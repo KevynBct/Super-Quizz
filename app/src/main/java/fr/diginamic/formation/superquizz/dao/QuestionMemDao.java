@@ -49,7 +49,7 @@ public class QuestionMemDao implements QuestionDao {
     }
 
     public void init() {
-        Question q1 = new Question("Capitale de la France");
+        Question q1 = new Question("Quel est la capitale de la France ?");
         q1.addProposition("Marseille");
         q1.addProposition("Paris");
         q1.addProposition("Lille");
@@ -57,7 +57,7 @@ public class QuestionMemDao implements QuestionDao {
         q1.setBonneReponse(2);
         q1.setType(TypeQuestion.SIMPLE);
 
-        Question q2 = new Question("Capitale de l'Espagne");
+        Question q2 = new Question("Quel est la capitale de l'Espagne ?");
         q2.addProposition("Madrid");
         q2.addProposition("Barcelone");
         q2.addProposition("Valence");
@@ -65,7 +65,7 @@ public class QuestionMemDao implements QuestionDao {
         q2.setBonneReponse(1);
         q2.setType(TypeQuestion.DOUBLE);
 
-        Question q3 = new Question("Capitale du Japon");
+        Question q3 = new Question("Quel est la capitale du Japon ?");
         q3.addProposition("Kyoto");
         q3.addProposition("Nara");
         q3.addProposition("Osaka");
