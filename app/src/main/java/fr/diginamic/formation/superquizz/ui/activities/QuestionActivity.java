@@ -1,4 +1,4 @@
-package fr.diginamic.formation.superquizz;
+package fr.diginamic.formation.superquizz.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 
+import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
+import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.model.Question;
+
 public class QuestionActivity extends AppCompatActivity {
+    private final String INDEX = "index";
+    private final String SCORE = "score";
     private ArrayList<Question> listeQuestions;
     private Question question;
     private Button answer1;
@@ -25,7 +31,7 @@ public class QuestionActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initActivity();
+        initActivity(savedInstanceState);
 
     }
 
@@ -43,9 +49,14 @@ public class QuestionActivity extends AppCompatActivity {
         }
     }
 
-    public  void initActivity(){
-        index = 0;
-        score = 0;
+    public  void initActivity(Bundle savedInstanceState){
+        if(savedInstanceState != null){
+            index = savedInstanceState.getInt(INDEX);
+            score = savedInstanceState.getInt(SCORE);
+        }else{
+            index = 0;
+            score = 0;
+        }
         QuestionMemDao questionMemDao = new QuestionMemDao();
 
         listeQuestions = questionMemDao.findAll();
@@ -76,4 +87,10 @@ public class QuestionActivity extends AppCompatActivity {
         answer4.setText(question.getProposition(3));
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(INDEX, index);
+        outState.putInt(SCORE, score);
+        super.onSaveInstanceState(outState);
+    }
 }

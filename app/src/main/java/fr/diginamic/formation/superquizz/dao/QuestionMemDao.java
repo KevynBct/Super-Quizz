@@ -1,6 +1,9 @@
-package fr.diginamic.formation.superquizz;
+package fr.diginamic.formation.superquizz.dao;
 
 import java.util.ArrayList;
+
+import fr.diginamic.formation.superquizz.model.Question;
+import fr.diginamic.formation.superquizz.model.TypeQuestion;
 
 public class QuestionMemDao implements QuestionDao {
     public ArrayList<Question> listeQuestions;

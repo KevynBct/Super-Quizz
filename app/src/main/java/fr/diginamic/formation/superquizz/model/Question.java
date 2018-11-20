@@ -1,4 +1,4 @@
-package fr.diginamic.formation.superquizz;
+package fr.diginamic.formation.superquizz.model;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,12 @@
-package fr.diginamic.formation.superquizz;
+package fr.diginamic.formation.superquizz.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
+import fr.diginamic.formation.superquizz.R;
 
 public class ResultActivity extends AppCompatActivity {
     public static String SCORE = "score";
