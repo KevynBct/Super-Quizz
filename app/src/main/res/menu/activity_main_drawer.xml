@@ -5,21 +5,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_play"
             android:icon="@drawable/ic_play_arrow_black_24dp"
             android:title="Jouer au quizz" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_add"
             android:icon="@drawable/ic_add_black_24dp"
             android:title="Ajouter une question" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_list"
             android:icon="@drawable/ic_list_black_24dp"
             android:title="Liste des question" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_delete"
             android:icon="@drawable/ic_delete_black_24dp"
             android:title="Supprimer une question" />
+
+        <item
+            android:id="@+id/nav_score"
+            android:icon="@drawable/ic_delete_black_24dp"
+            android:title="Score" />
     </group>
 
     <item android:title="Communicate">

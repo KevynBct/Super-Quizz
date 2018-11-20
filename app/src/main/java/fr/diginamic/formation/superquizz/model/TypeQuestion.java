@@ -1,4 +1,4 @@
-package fr.diginamic.formation.superquizz;
+package fr.diginamic.formation.superquizz.model;
 
 public enum TypeQuestion {
     SIMPLE("Simple"),

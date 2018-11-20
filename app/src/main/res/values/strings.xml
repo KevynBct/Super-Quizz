@@ -9,4 +9,8 @@
     <string name="title_activity_question">QuestionActivity</string>
     <string name="title_activity_result">ResultActivity</string>
     <string name="title_activity_add_question">AddQuestionActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_question_text">Ajoutez une question</string>
 </resources>
