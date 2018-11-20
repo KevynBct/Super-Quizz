@@ -1,11 +1,15 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
@@ -13,6 +17,8 @@ import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.model.Question;
 
 public class QuestionActivity extends AppCompatActivity {
+    public static final String QUESTION = "question";
+    public static final String FROM_LIST = "from_list";
     private final String INDEX = "index";
     private final String SCORE = "score";
     private ArrayList<Question> listeQuestions;
@@ -21,8 +27,9 @@ public class QuestionActivity extends AppCompatActivity {
     private Button answer2;
     private Button answer3;
     private Button answer4;
-    private int index;
-    private int score;
+    private boolean fromList = false;
+    private int index = 0;
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,38 +38,51 @@ public class QuestionActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        fromList = getIntent().getBooleanExtra(FROM_LIST, false);
+        question = getIntent().getParcelableExtra(QUESTION);
+
         initActivity(savedInstanceState);
 
     }
 
-    private void verifyAnswer(Question question, int answer){
-        if(question.getBonneReponse() == answer){
-            score += question.getPoint();
-        }
-        if (index == listeQuestions.size() - 1){
-            Intent resultIntent = new Intent(this, ResultActivity.class);
-            resultIntent.putExtra(ResultActivity.SCORE, score);
-            startActivity(resultIntent);
-        }else {
-            index++;
-            loadContentQuestion();
+    private void verifyAnswer(Question question, int answer, View button){
+        if(fromList){
+            resetColor();
+            if(question.getBonneReponse() == answer){
+                button.setBackgroundColor(Color.GREEN);
+            }else{
+                button.setBackgroundColor(Color.RED);
+            }
+
+        }else{
+            if(question.getBonneReponse() == answer){
+                score += question.getPoint();
+            }
+            if (index == listeQuestions.size() - 1){
+                Intent resultIntent = new Intent(this, ResultActivity.class);
+                resultIntent.putExtra(ResultActivity.SCORE, score);
+                startActivity(resultIntent);
+            }else {
+                index++;
+                loadContentQuestion();
+            }
         }
     }
 
     public  void initActivity(Bundle savedInstanceState){
         if(savedInstanceState != null){
-            index = savedInstanceState.getInt(INDEX);
-            score = savedInstanceState.getInt(SCORE);
-        }else{
-            index = 0;
-            score = 0;
+            fromList = savedInstanceState.getBoolean(FROM_LIST);
+            if(!fromList){
+                index = savedInstanceState.getInt(INDEX);
+                score = savedInstanceState.getInt(SCORE);
+            }
         }
-        QuestionMemDao questionMemDao = new QuestionMemDao();
 
-        listeQuestions = questionMemDao.findAll();
-
-        question = listeQuestions.get(index);
-
+        if(!fromList){
+            QuestionMemDao questionMemDao = new QuestionMemDao();
+            listeQuestions = questionMemDao.findAll();
+            question = listeQuestions.get(index);
+        }
         answer1 = findViewById(R.id.answer_1);
         answer2 = findViewById(R.id.answer_2);
         answer3 = findViewById(R.id.answer_3);
@@ -70,14 +90,16 @@ public class QuestionActivity extends AppCompatActivity {
 
         loadContentQuestion();
 
-        answer1.setOnClickListener(v -> verifyAnswer(question, 1));
-        answer2.setOnClickListener(v -> verifyAnswer(question, 2));
-        answer3.setOnClickListener(v -> verifyAnswer(question, 3));
-        answer4.setOnClickListener(v -> verifyAnswer(question, 4));
+        answer1.setOnClickListener(v -> verifyAnswer(question, 1, v));
+        answer2.setOnClickListener(v -> verifyAnswer(question, 2, v));
+        answer3.setOnClickListener(v -> verifyAnswer(question, 3, v));
+        answer4.setOnClickListener(v -> verifyAnswer(question, 4, v));
     }
 
     public void loadContentQuestion(){
-        question = listeQuestions.get(index);
+        if (!fromList){
+            question = listeQuestions.get(index);
+        }
 
         ((TextView) findViewById(R.id.question)).setText(question.getIntitule());
 
@@ -89,8 +111,21 @@ public class QuestionActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(INDEX, index);
-        outState.putInt(SCORE, score);
+         if(fromList){
+            outState.putParcelable(QUESTION, question);
+        }else {
+            outState.putInt(INDEX, index);
+            outState.putInt(SCORE, score);
+        }
+        outState.putBoolean(FROM_LIST, fromList);
+
         super.onSaveInstanceState(outState);
+    }
+
+    public void resetColor(){
+        answer1.setBackgroundColor(getColor(R.color.colorAccent));
+        answer2.setBackgroundColor(getColor(R.color.colorAccent));
+        answer3.setBackgroundColor(getColor(R.color.colorAccent));
+        answer4.setBackgroundColor(getColor(R.color.colorAccent));
     }
 }

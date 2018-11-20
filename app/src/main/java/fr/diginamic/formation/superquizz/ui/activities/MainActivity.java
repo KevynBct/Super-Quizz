@@ -1,5 +1,6 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.model.Question;
@@ -18,7 +18,6 @@ import fr.diginamic.formation.superquizz.ui.fragments.AddQuestionFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.PlayFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.QuestionListFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.ScoreFragment;
-import fr.diginamic.formation.superquizz.ui.fragments.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,
@@ -151,6 +150,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Question question) {
-        Toast.makeText(this, "Question", Toast.LENGTH_SHORT).show();
+        Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
+        questionIntent.putExtra(QuestionActivity.QUESTION, question);
+        questionIntent.putExtra(QuestionActivity.FROM_LIST, true);
+        startActivity(questionIntent);
     }
 }

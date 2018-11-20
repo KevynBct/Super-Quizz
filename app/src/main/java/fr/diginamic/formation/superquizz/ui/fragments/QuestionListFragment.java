@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
 import fr.diginamic.formation.superquizz.model.Question;
-import fr.diginamic.formation.superquizz.ui.fragments.dummy.DummyContent;
-import fr.diginamic.formation.superquizz.ui.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
