@@ -1,10 +1,9 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,27 +23,26 @@ import fr.diginamic.formation.superquizz.ui.fragments.QuestionListFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.ScoreFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,
-        ScoreFragment.OnFragmentInteractionListener, QuestionListFragment.OnListFragmentInteractionListener, AddQuestionFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.PlayFragmentListener, QuestionListFragment.QuestionListListener, AddQuestionFragment.AddQuestionListener {
     private final String CURRENT_FRAGMENT = "current_fragment";
     private final String CURRENT_LIST = "current_list";
     private int idFragment = 0;
-    public static ArrayList<Question> listQuestions = new QuestionMemDao().findAll();;
+    public static ArrayList<Question> listQuestions = new QuestionMemDao().findAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         initActivity(savedInstanceState);
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -77,9 +75,8 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_play) {
@@ -92,14 +89,14 @@ public class MainActivity extends AppCompatActivity
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment()).commit();
             idFragment = 2;
 
-        } else if (id == R.id.nav_delete) {
+        //} else if (id == R.id.nav_delete) {
 
         } else if (id == R.id.nav_score) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
             idFragment = 4;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -145,15 +142,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
     @Override
     public void onListFragmentInteraction(Question question) {
@@ -167,5 +155,11 @@ public class MainActivity extends AppCompatActivity
     public void saveQuestion(Question question) {
         listQuestions.add(question);
         this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
+    }
+
+    @Override
+    public void onPlayButton() {
+        Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
+        startActivity(questionIntent);
     }
 }
