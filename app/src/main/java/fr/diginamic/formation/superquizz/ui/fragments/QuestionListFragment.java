@@ -14,8 +14,6 @@ import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
 import fr.diginamic.formation.superquizz.model.Question;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
