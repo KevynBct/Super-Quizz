@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,7 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.fragments.AddQuestionFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.PlayFragment;
@@ -21,10 +25,11 @@ import fr.diginamic.formation.superquizz.ui.fragments.ScoreFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.OnFragmentInteractionListener,
-        ScoreFragment.OnFragmentInteractionListener, AddQuestionFragment.OnFragmentInteractionListener,
-        QuestionListFragment.OnListFragmentInteractionListener {
+        ScoreFragment.OnFragmentInteractionListener, QuestionListFragment.OnListFragmentInteractionListener, AddQuestionFragment.OnFragmentInteractionListener {
     private final String CURRENT_FRAGMENT = "current_fragment";
+    private final String CURRENT_LIST = "current_list";
     private int idFragment = 0;
+    public static ArrayList<Question> listQuestions = new QuestionMemDao().findAll();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +108,12 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_FRAGMENT, idFragment);
+        outState.putParcelableArrayList(CURRENT_LIST, listQuestions);
     }
 
     public void initActivity(Bundle savedInstanceState){
         if(savedInstanceState != null){
+            listQuestions = savedInstanceState.getParcelableArrayList(CURRENT_LIST);
             switch (savedInstanceState.getInt(CURRENT_FRAGMENT)){
                 case 0 : {
                     this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
@@ -154,5 +161,11 @@ public class MainActivity extends AppCompatActivity
         questionIntent.putExtra(QuestionActivity.QUESTION, question);
         questionIntent.putExtra(QuestionActivity.FROM_LIST, true);
         startActivity(questionIntent);
+    }
+
+    @Override
+    public void saveQuestion(Question question) {
+        listQuestions.add(question);
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ListFragment()).commit();
     }
 }

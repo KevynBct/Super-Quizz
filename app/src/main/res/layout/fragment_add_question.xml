@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/add_question_intitule"
+                android:id="@+id/edit_question_intitule"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:maxLines="5"
@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/proposition_1"
+                android:nextFocusForward="@id/edit_answer_2"
                 android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -70,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/proposition_2"
+                android:nextFocusForward="@id/edit_answer_3"
                 android:inputType="text"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -90,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/proposition_3"
+                android:nextFocusForward="@id/edit_answer_4"
                 android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -111,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/edit_answer_3"
                 android:hint="@string/proposition_4"
+                android:imeOptions="actionDone"
                 android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -164,7 +168,7 @@
 
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/add_question_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

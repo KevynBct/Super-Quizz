@@ -21,7 +21,7 @@ public class QuestionActivity extends AppCompatActivity {
     public static final String FROM_LIST = "from_list";
     private final String INDEX = "index";
     private final String SCORE = "score";
-    private ArrayList<Question> listeQuestions;
+    private ArrayList<Question> listQuestions;
     private Question question;
     private Button answer1;
     private Button answer2;
@@ -58,7 +58,7 @@ public class QuestionActivity extends AppCompatActivity {
             if(question.getBonneReponse() == answer){
                 score += question.getPoint();
             }
-            if (index == listeQuestions.size() - 1){
+            if (index == listQuestions.size() - 1){
                 Intent resultIntent = new Intent(this, ResultActivity.class);
                 resultIntent.putExtra(ResultActivity.SCORE, score);
                 startActivity(resultIntent);
@@ -79,9 +79,8 @@ public class QuestionActivity extends AppCompatActivity {
         }
 
         if(!fromList){
-            QuestionMemDao questionMemDao = new QuestionMemDao();
-            listeQuestions = questionMemDao.findAll();
-            question = listeQuestions.get(index);
+            listQuestions = MainActivity.listQuestions;
+            question = listQuestions.get(index);
         }
         answer1 = findViewById(R.id.answer_1);
         answer2 = findViewById(R.id.answer_2);
@@ -98,7 +97,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void loadContentQuestion(){
         if (!fromList){
-            question = listeQuestions.get(index);
+            question = listQuestions.get(index);
         }
 
         ((TextView) findViewById(R.id.question)).setText(question.getIntitule());

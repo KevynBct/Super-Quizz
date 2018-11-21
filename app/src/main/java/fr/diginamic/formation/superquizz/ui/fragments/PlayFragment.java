@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.activities.QuestionActivity;
 
 public class PlayFragment extends Fragment {

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
 import fr.diginamic.formation.superquizz.model.Question;
+import fr.diginamic.formation.superquizz.ui.activities.MainActivity;
 
 /**
  * A fragment representing a list of Items.
@@ -68,7 +69,7 @@ public class QuestionListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new QuestionRecyclerViewAdapter(new QuestionMemDao().findAll(), mListener));
+            recyclerView.setAdapter(new QuestionRecyclerViewAdapter(MainActivity.listQuestions, mListener));
         }
         return view;
     }
