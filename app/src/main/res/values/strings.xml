@@ -25,4 +25,10 @@
     <string name="answer_2">Réponse 2</string>
     <string name="answer_3">Réponse 3</string>
     <string name="answer_4">Réponse 4</string>
+    <string name="play_quizz">Jouer au quizz</string>
+    <string name="questions_list">Liste des questions</string>
+    <string name="delete_question">Supprimer une question</string>
+    <string name="communicate">Communiquer</string>
+    <string name="share">Partager</string>
+    <string name="send">Envoyer</string>
 </resources>

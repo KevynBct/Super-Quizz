@@ -26,4 +26,10 @@
     <string name="answer_2">Answer 2</string>
     <string name="answer_3">Answer 3</string>
     <string name="answer_4">Answer 4</string>
+    <string name="play_quizz">Play quizz</string>
+    <string name="questions_list">Questions list</string>
+    <string name="delete_question">Delete question</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="send">Send</string>
 </resources>
