@@ -1,35 +1,27 @@
 package fr.diginamic.formation.superquizz.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import fr.diginamic.formation.superquizz.R;
-import fr.diginamic.formation.superquizz.ui.activities.QuestionActivity;
 
 public class PlayFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private PlayFragmentListener mListener;
 
     public PlayFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static PlayFragment newInstance(String param1, String param2) {
         PlayFragment fragment = new PlayFragment();
         Bundle args = new Bundle();
@@ -51,27 +43,26 @@ public class PlayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_play, container, false);
         view.findViewById(R.id.play_button).setOnClickListener(v -> {
-            Intent questionIntent = new Intent(getContext(), QuestionActivity.class);
-            startActivity(questionIntent);
+            mListener.onPlayButton();
         });
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onPlayButton();
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof PlayFragmentListener) {
+            mListener = (PlayFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -84,8 +75,7 @@ public class PlayFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface PlayFragmentListener {
+        void onPlayButton();
     }
 }
