@@ -166,6 +166,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void saveQuestion(Question question) {
         listQuestions.add(question);
-        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ListFragment()).commit();
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
     }
 }
