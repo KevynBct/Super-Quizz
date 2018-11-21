@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Question"
+        android:text="@string/question"
         android:id="@+id/question"
         android:textSize="40sp"
         />
@@ -26,7 +26,7 @@
 
         <Button
             style="@style/AnswerButtonStyle"
-            android:text="Réponse 1"
+            android:text="@string/answer_1"
             android:id="@+id/answer_1"
             android:layout_gravity="center"
             android:layout_row="0"
@@ -35,21 +35,21 @@
         <Button
             style="@style/AnswerButtonStyle"
             android:id="@+id/answer_2"
-            android:text="Réponse 2"
+            android:text="@string/answer_2"
             android:layout_row="0"
             android:layout_column="1"/>
 
         <Button
             style="@style/AnswerButtonStyle"
             android:id="@+id/answer_3"
-            android:text="Réponse 3"
+            android:text="@string/answer_3"
             android:layout_column="0"
             android:layout_row="1"/>
 
         <Button
             style="@style/AnswerButtonStyle"
             android:id="@+id/answer_4"
-            android:text="Réponse 4"
+            android:text="@string/answer_4"
             android:layout_column="1"
             android:layout_row="1"/>
 

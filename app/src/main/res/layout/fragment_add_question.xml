@@ -8,64 +8,97 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="287dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/layoutFood1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="8dp"
+            android:id="@+id/add_question_intitule_design"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <EditText
             android:id="@+id/add_question_intitule"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:inputType="text"
-            android:maxLines="3"
             android:hint="@string/add_question_text" />
         </android.support.design.widget.TextInputLayout>
 
 
-        <EditText
-            android:layout_width="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="287dp"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_answer_1"
-            android:hint="Proposition 1"
-            android:layout_above="@+id/edit_answer_2"
-            android:layout_centerInParent="true"
-            />
-        <EditText
-            android:layout_width="match_parent"
+            android:layout_marginStart="8dp"
+            android:id="@+id/edit_answer_1_design"
+            android:layout_above="@+id/edit_answer_2_design"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_answer_1"
+                android:hint="@string/proposition_1"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="287dp"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_answer_2"
-            android:hint="Proposition 2"
-            android:layout_centerInParent="true"
-            />
-        <EditText
-            android:layout_width="match_parent"
+            android:layout_marginStart="8dp"
+            android:id="@+id/edit_answer_2_design"
+            android:layout_centerVertical="true"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_answer_2"
+                android:hint="@string/proposition_2"
+
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="287dp"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_answer_3"
-            android:hint="Proposition 3"
-            android:layout_below="@+id/edit_answer_2"
-            android:layout_centerInParent="true"
-            />
-        <EditText
-            android:layout_width="match_parent"
+            android:layout_marginStart="8dp"
+            android:id="@+id/edit_answer_3_design"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/edit_answer_2_design"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_answer_3"
+                android:hint="@string/proposition_3"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="287dp"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_answer_4"
-            android:hint="Proposition 4"
-            android:layout_below="@+id/edit_answer_3"
-            android:layout_centerInParent="true"
-            />
+            android:layout_marginStart="8dp"
+            android:id="@+id/edit_answer_4_design"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/edit_answer_3_design"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_answer_4"
+                android:hint="@string/proposition_4"
+                android:layout_below="@+id/edit_answer_3"
+                />
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text_answer_choice"
             android:layout_marginTop="10dip"
-            android:text="Bonne réponse :"
+            android:text="@string/good_answer"
             android:layout_marginBottom="5dp"
-            android:layout_below="@id/edit_answer_4"
+            android:layout_below="@id/edit_answer_4_design"
             android:layout_centerHorizontal="true"/>
 
         <Spinner
@@ -80,9 +113,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_add_black_24dp"/>
 
     </RelativeLayout>
