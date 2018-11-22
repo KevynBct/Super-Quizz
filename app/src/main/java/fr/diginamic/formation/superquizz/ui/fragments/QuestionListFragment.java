@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.activities.MainActivity;
 
@@ -54,7 +55,7 @@ public class QuestionListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new QuestionRecyclerViewAdapter(MainActivity.listQuestions, mListener));
+            recyclerView.setAdapter(new QuestionRecyclerViewAdapter(QuestionsDatabaseHelper.getInstance(getContext()).getAllQuestions(), mListener));
         }
         return view;
     }

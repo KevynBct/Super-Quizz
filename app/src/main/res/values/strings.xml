@@ -13,7 +13,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_question_text">Ajoutez une question</string>
-    <string name="play">Jouer !</string>
+    <string name="play">Jouer</string>
     <string name="proposition_1">Proposition 1</string>
     <string name="proposition_2">Proposition 2</string>
     <string name="proposition_3">Proposition 3</string>
