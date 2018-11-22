@@ -96,13 +96,13 @@ public class AddQuestionFragment extends Fragment {
             question.addProposition(((TextView) getView().findViewById(R.id.edit_answer_4)).getText().toString());
 
             if(((RadioButton) getView().findViewById(R.id.radio_button_1)).isChecked()){
-                question.setBonneReponse(1);
+                question.setGoodAnswer(((TextView) getView().findViewById(R.id.edit_answer_1)).getText().toString());
             } else if (((RadioButton) getView().findViewById(R.id.radio_button_2)).isChecked()){
-                question.setBonneReponse(2);
+                question.setGoodAnswer(((TextView) getView().findViewById(R.id.edit_answer_2)).getText().toString());
             }else if(((RadioButton) getView().findViewById(R.id.radio_button_3)).isChecked()){
-                question.setBonneReponse(3);
+                question.setGoodAnswer(((TextView) getView().findViewById(R.id.edit_answer_3)).getText().toString());
             }else if(((RadioButton) getView().findViewById(R.id.radio_button_4)).isChecked()){
-                question.setBonneReponse(4);
+                question.setGoodAnswer(((TextView) getView().findViewById(R.id.edit_answer_4)).getText().toString());
             }
 
             question.setType(TypeQuestion.SIMPLE);

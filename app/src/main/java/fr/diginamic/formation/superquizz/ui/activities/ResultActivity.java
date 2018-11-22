@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
+import fr.diginamic.formation.superquizz.model.Question;
+import fr.diginamic.formation.superquizz.model.TypeQuestion;
 
 public class ResultActivity extends AppCompatActivity {
     public static String SCORE = "score";
@@ -24,8 +27,18 @@ public class ResultActivity extends AppCompatActivity {
 
         int score = getIntent().getIntExtra(SCORE, 0);
 
-        ((TextView) findViewById(R.id.result_score_view)).setText(score + "/" + questionMemDao.getMaxPoint());
+        ((TextView) findViewById(R.id.result_score_view)).setText(score + "/" + getMaxPoint());
 
     }
 
+    public int getMaxPoint() {
+        int maxPoint = 0;
+        for(Question question : QuestionsDatabaseHelper.getInstance(this).getAllQuestions()) {
+            if(question.getType() == TypeQuestion.DOUBLE)
+                maxPoint += 2;
+            else
+                maxPoint++;
+        }
+        return maxPoint;
+    }
 }

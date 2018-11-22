@@ -9,13 +9,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.dao.QuestionMemDao;
+import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.fragments.AddQuestionFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.PlayFragment;
@@ -27,7 +30,6 @@ public class MainActivity extends AppCompatActivity
     private final String CURRENT_FRAGMENT = "current_fragment";
     private final String CURRENT_LIST = "current_list";
     private int idFragment = 0;
-    public static ArrayList<Question> listQuestions = new QuestionMemDao().findAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +107,10 @@ public class MainActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(CURRENT_FRAGMENT, idFragment);
-        outState.putParcelableArrayList(CURRENT_LIST, listQuestions);
     }
 
     public void initActivity(Bundle savedInstanceState){
         if(savedInstanceState != null){
-            listQuestions = savedInstanceState.getParcelableArrayList(CURRENT_LIST);
             switch (savedInstanceState.getInt(CURRENT_FRAGMENT)){
                 case 0 : {
                     this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
@@ -153,13 +153,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void saveQuestion(Question question) {
-        listQuestions.add(question);
+        QuestionsDatabaseHelper.getInstance(this).addQuestion(question);
         this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
     }
 
     @Override
     public void onPlayButton() {
-        Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
-        startActivity(questionIntent);
+        if(QuestionsDatabaseHelper.getInstance(this).getAllQuestions().isEmpty()){
+            Toast.makeText(this, "Il n'y a aucune question", Toast.LENGTH_SHORT).show();
+        }else {
+            Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
+            startActivity(questionIntent);
+        }
     }
 }

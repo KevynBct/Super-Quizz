@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 
 public class QuestionActivity extends AppCompatActivity {
@@ -19,7 +20,6 @@ public class QuestionActivity extends AppCompatActivity {
     public static final String FROM_LIST = "from_list";
     private final String INDEX = "index";
     private final String SCORE = "score";
-    private ArrayList<Question> listQuestions;
     private Question question;
     private Button answer1;
     private Button answer2;
@@ -43,24 +43,23 @@ public class QuestionActivity extends AppCompatActivity {
 
     }
 
-    private void verifyAnswer(Question question, int answer, View button){
-        if(fromList){
-            resetColor();
-            if(question.getBonneReponse() == answer){
-                button.setBackgroundColor(Color.GREEN);
-            }else{
-                button.setBackgroundColor(Color.RED);
-            }
-
+    private void verifyAnswer(Question question, String answer, View button){
+        resetColor();
+        if(question.getGoodAnswer().equals(answer)){
+            button.setBackgroundColor(Color.GREEN);
         }else{
-            if(question.getBonneReponse() == answer){
+            button.setBackgroundColor(Color.RED);
+        }
+
+        if(!fromList) {
+            if (question.getGoodAnswer().equals(answer)) {
                 score += question.getPoint();
             }
-            if (index == listQuestions.size() - 1){
+            if (index == QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size() - 1) {
                 Intent resultIntent = new Intent(this, ResultActivity.class);
                 resultIntent.putExtra(ResultActivity.SCORE, score);
                 startActivity(resultIntent);
-            }else {
+            } else {
                 index++;
                 loadContentQuestion();
             }
@@ -77,8 +76,7 @@ public class QuestionActivity extends AppCompatActivity {
         }
 
         if(!fromList){
-            listQuestions = MainActivity.listQuestions;
-            question = listQuestions.get(index);
+            question = QuestionsDatabaseHelper.getInstance(this).getAllQuestions().get(index);
         }
         answer1 = findViewById(R.id.answer_1);
         answer2 = findViewById(R.id.answer_2);
@@ -87,18 +85,19 @@ public class QuestionActivity extends AppCompatActivity {
 
         loadContentQuestion();
 
-        answer1.setOnClickListener(v -> verifyAnswer(question, 1, v));
-        answer2.setOnClickListener(v -> verifyAnswer(question, 2, v));
-        answer3.setOnClickListener(v -> verifyAnswer(question, 3, v));
-        answer4.setOnClickListener(v -> verifyAnswer(question, 4, v));
+        answer1.setOnClickListener(v -> verifyAnswer(question, answer1.getText().toString(), v));
+        answer2.setOnClickListener(v -> verifyAnswer(question, answer2.getText().toString(), v));
+        answer3.setOnClickListener(v -> verifyAnswer(question, answer3.getText().toString(), v));
+        answer4.setOnClickListener(v -> verifyAnswer(question, answer4.getText().toString(), v));
     }
 
     public void loadContentQuestion(){
+        resetColor();
         if (!fromList){
-            question = listQuestions.get(index);
+            question = QuestionsDatabaseHelper.getInstance(this).getAllQuestions().get(index);
         }
 
-        ((TextView) findViewById(R.id.question)).setText(question.getIntitule());
+        ((TextView) findViewById(R.id.question)).setText(question.getEntitle());
 
         answer1.setText(question.getProposition(0));
         answer2.setText(question.getProposition(1));
