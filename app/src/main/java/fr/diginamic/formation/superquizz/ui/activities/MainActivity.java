@@ -56,7 +56,12 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(idFragment == 0){
+                super.onBackPressed();
+            }else{
+                this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
+                idFragment = 0;
+            }
         }
     }
 
