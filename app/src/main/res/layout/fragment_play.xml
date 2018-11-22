@@ -4,13 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.PlayFragment">
-    
-    <Button
-        android:layout_width="120dp"
-        android:layout_height="70dp"
-        android:id="@+id/play_button"
-        android:text="@string/play"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_gravity="center"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/play_button"
+            android:src="@drawable/ic_play_arrow_black_24dp"
+            android:layout_centerInParent="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play"
+            android:layout_below="@+id/play_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="30sp"/>
+
+    </RelativeLayout>
+
 
 </FrameLayout>
