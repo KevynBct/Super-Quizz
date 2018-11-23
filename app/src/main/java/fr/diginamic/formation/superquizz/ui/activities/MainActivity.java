@@ -97,9 +97,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_list) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment()).commit();
             idFragment = 2;
-
-        //} else if (id == R.id.nav_delete) {
-
         } else if (id == R.id.nav_score) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
             idFragment = 4;

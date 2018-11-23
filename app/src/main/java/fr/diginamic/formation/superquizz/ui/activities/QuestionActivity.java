@@ -5,19 +5,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.thread.QuestionTask;
 
-public class QuestionActivity extends AppCompatActivity implements QuestionTask.QuestionTaskListener {
+public class QuestionActivity extends AppCompatActivity implements QuestionTask.QuestionTaskListener{
     public static final String QUESTION = "question";
     public static final String FROM_LIST = "from_list";
     private final String INDEX = "index";
