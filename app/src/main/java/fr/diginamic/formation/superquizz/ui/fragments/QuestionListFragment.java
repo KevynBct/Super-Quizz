@@ -7,19 +7,23 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
-import fr.diginamic.formation.superquizz.ui.activities.MainActivity;
 
 
 public class QuestionListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private QuestionListListener mListener;
+    private QuestionRecyclerViewAdapter adapter;
 
     public QuestionListFragment() {
     }
@@ -47,6 +51,8 @@ public class QuestionListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_list, container, false);
 
+        setHasOptionsMenu(true);
+
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -55,9 +61,29 @@ public class QuestionListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new QuestionRecyclerViewAdapter(QuestionsDatabaseHelper.getInstance(getContext()).getAllQuestions(), mListener));
+            adapter = new QuestionRecyclerViewAdapter(QuestionsDatabaseHelper.getInstance(getContext()).getAllQuestions(), mListener);
+            recyclerView.setAdapter(adapter);
         }
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.question_list_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete) {
+            QuestionsDatabaseHelper.getInstance(getContext()).deleteAllQuestions();
+            adapter.notifyDataSetChanged();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

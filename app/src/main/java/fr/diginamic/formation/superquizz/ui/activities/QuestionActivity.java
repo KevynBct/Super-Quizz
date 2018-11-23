@@ -5,17 +5,19 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.ArrayList;
+import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
+import fr.diginamic.formation.superquizz.ui.thread.QuestionTask;
 
-public class QuestionActivity extends AppCompatActivity {
+public class QuestionActivity extends AppCompatActivity implements QuestionTask.QuestionTaskListener {
     public static final String QUESTION = "question";
     public static final String FROM_LIST = "from_list";
     private final String INDEX = "index";
@@ -28,6 +30,7 @@ public class QuestionActivity extends AppCompatActivity {
     private boolean fromList = false;
     private int index = 0;
     private int score = 0;
+    private QuestionTask questionTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void verifyAnswer(Question question, String answer, View button){
+        questionTask.cancel(true);
         resetColor();
         if(question.getGoodAnswer().equals(answer)){
             button.setBackgroundColor(Color.GREEN);
@@ -89,10 +93,16 @@ public class QuestionActivity extends AppCompatActivity {
         answer2.setOnClickListener(v -> verifyAnswer(question, answer2.getText().toString(), v));
         answer3.setOnClickListener(v -> verifyAnswer(question, answer3.getText().toString(), v));
         answer4.setOnClickListener(v -> verifyAnswer(question, answer4.getText().toString(), v));
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        questionTask.cancel(true);
     }
 
     public void loadContentQuestion(){
-        resetColor();
         if (!fromList){
             question = QuestionsDatabaseHelper.getInstance(this).getAllQuestions().get(index);
         }
@@ -103,6 +113,11 @@ public class QuestionActivity extends AppCompatActivity {
         answer2.setText(question.getProposition(1));
         answer3.setText(question.getProposition(2));
         answer4.setText(question.getProposition(3));
+
+        resetColor();
+
+        questionTask = new QuestionTask(this);
+        questionTask.execute();
     }
 
     @Override
@@ -123,5 +138,21 @@ public class QuestionActivity extends AppCompatActivity {
         answer2.setBackgroundColor(getColor(R.color.colorAccent));
         answer3.setBackgroundColor(getColor(R.color.colorAccent));
         answer4.setBackgroundColor(getColor(R.color.colorAccent));
+    }
+
+    @Override
+    public void onProgressQuestionTask(int count) {
+       ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(100 - count);
+
+       if(count == 100){
+           if (index == QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size() - 1) {
+               Intent resultIntent = new Intent(this, ResultActivity.class);
+               resultIntent.putExtra(ResultActivity.SCORE, score);
+               startActivity(resultIntent);
+           } else {
+               index++;
+               loadContentQuestion();
+           }
+       }
     }
 }

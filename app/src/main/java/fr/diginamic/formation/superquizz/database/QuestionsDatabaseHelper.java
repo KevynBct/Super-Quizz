@@ -7,12 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.model.TypeQuestion;
 
-public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
+public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClient.APIResult<ArrayList<Question>> {
     private static QuestionsDatabaseHelper questionsDatabaseHelper;
     // Database Info
     private static final String DATABASE_NAME = "questionsDatabase";
@@ -35,6 +36,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
     public static synchronized QuestionsDatabaseHelper getInstance(Context context) {
         if (questionsDatabaseHelper == null) {
             questionsDatabaseHelper = new QuestionsDatabaseHelper(context.getApplicationContext());
+            APIClient.getInstance().getQuestions(questionsDatabaseHelper);
         }
         return questionsDatabaseHelper;
     }
@@ -93,7 +95,10 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Question> getAllQuestions() {
+
         ArrayList<Question> questions = new ArrayList<>();
+
+        //APIClient.getInstance().getQuestions(this);
 
         String QCM_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_QCM);
 
@@ -134,5 +139,27 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public void initOnlineQuestions(ArrayList<Question> onlineQuestionsList){
+        ArrayList<Question> localQuestionsList = this.getAllQuestions();
+        for (int i = 0; i < onlineQuestionsList.size(); i++) {
+            if(!localQuestionsList.contains(onlineQuestionsList.get(i))){
+                addQuestion(onlineQuestionsList.get(i));
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onFailure(IOException e) {
+        Log.i("TESTHTTP", "onFailure");
+
+    }
+
+    @Override
+    public void OnSuccess(ArrayList<Question> questionsList) throws IOException {
+        initOnlineQuestions(questionsList);
     }
 }
