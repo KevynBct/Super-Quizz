@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class Question implements Parcelable {
+
+    private int id;
     private String entitle;
     private ArrayList<String> propositions;
     private String goodAnswer;
@@ -43,6 +45,14 @@ public class Question implements Parcelable {
 
     public void addProposition(String proposition) {
         this.propositions.add(proposition);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEntitle() {
