@@ -40,7 +40,7 @@ public class APIClient {
             @Override
             public void onFailure(Call call, IOException e) {
                 result.onFailure(e);
-                Log.i("REQUESTQUESTION", e.getMessage());
+                Log.i("REQUEST_ QUESTION", e.getMessage());
             }
 
             @Override
@@ -66,7 +66,6 @@ public class APIClient {
                 } catch (JSONException e) {
 
                 }
-
                 result.OnSuccess(questions);
             }
         });

@@ -154,8 +154,6 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
 
     @Override
     public void onFailure(IOException e) {
-        Log.i("TESTHTTP", "onFailure");
-
     }
 
     @Override
