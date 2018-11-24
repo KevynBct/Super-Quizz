@@ -126,6 +126,22 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         return questions;
     }
 
+    public int updateQuestion(Question question) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ENTITLE, question.getEntitle());
+        values.put(ANSWER_1, question.getProposition(0));
+        values.put(ANSWER_2, question.getProposition(1));
+        values.put(ANSWER_3, question.getProposition(2));
+        values.put(ANSWER_4, question.getProposition(3));
+        values.put(GOOD_ANSWER, question.getGoodAnswer());
+
+        // Updating profile picture url for user with that userName
+        return db.update(TABLE_QCM, values, KEY_QUESTION_ID + " = ?",
+                new String[] { String.valueOf(question.getId())});
+    }
+
     public void deleteAllQuestions() {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
