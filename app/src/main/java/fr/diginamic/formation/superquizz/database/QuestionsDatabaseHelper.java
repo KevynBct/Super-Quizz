@@ -98,8 +98,6 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
 
         ArrayList<Question> questions = new ArrayList<>();
 
-        //APIClient.getInstance().getQuestions(this);
-
         String QCM_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_QCM);
 
         SQLiteDatabase db = getReadableDatabase();
@@ -142,14 +140,16 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
     }
 
     public void initOnlineQuestions(ArrayList<Question> onlineQuestionsList){
-        ArrayList<Question> localQuestionsList = this.getAllQuestions();
-        for (int i = 0; i < onlineQuestionsList.size(); i++) {
-            if(!localQuestionsList.contains(onlineQuestionsList.get(i))){
-                addQuestion(onlineQuestionsList.get(i));
+        ArrayList<Integer> localIdList = new ArrayList<>();
+
+        for (Question question : this.getAllQuestions()){
+            localIdList.add(question.getId());
+        }
+        for (Question question : onlineQuestionsList) {
+            if(!localIdList.contains(question.getId())){
+                addQuestion(question);
             }
         }
-
-
     }
 
     @Override
