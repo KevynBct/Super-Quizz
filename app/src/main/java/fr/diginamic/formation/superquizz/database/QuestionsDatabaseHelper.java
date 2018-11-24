@@ -98,8 +98,6 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
 
         ArrayList<Question> questions = new ArrayList<>();
 
-        //APIClient.getInstance().getQuestions(this);
-
         String QCM_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_QCM);
 
         SQLiteDatabase db = getReadableDatabase();
@@ -128,6 +126,22 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         return questions;
     }
 
+    public int updateQuestion(Question question) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ENTITLE, question.getEntitle());
+        values.put(ANSWER_1, question.getProposition(0));
+        values.put(ANSWER_2, question.getProposition(1));
+        values.put(ANSWER_3, question.getProposition(2));
+        values.put(ANSWER_4, question.getProposition(3));
+        values.put(GOOD_ANSWER, question.getGoodAnswer());
+
+        // Updating profile picture url for user with that userName
+        return db.update(TABLE_QCM, values, KEY_QUESTION_ID + " = ?",
+                new String[] { String.valueOf(question.getId())});
+    }
+
     public void deleteAllQuestions() {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -142,14 +156,16 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
     }
 
     public void initOnlineQuestions(ArrayList<Question> onlineQuestionsList){
-        ArrayList<Question> localQuestionsList = this.getAllQuestions();
-        for (int i = 0; i < onlineQuestionsList.size(); i++) {
-            if(!localQuestionsList.contains(onlineQuestionsList.get(i))){
-                addQuestion(onlineQuestionsList.get(i));
+        ArrayList<Integer> localIdList = new ArrayList<>();
+
+        for (Question question : this.getAllQuestions()){
+            localIdList.add(question.getId());
+        }
+        for (Question question : onlineQuestionsList) {
+            if(!localIdList.contains(question.getId())){
+                addQuestion(question);
             }
         }
-
-
     }
 
     @Override

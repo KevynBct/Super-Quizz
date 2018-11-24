@@ -123,35 +123,18 @@ public class AddQuestionFragment extends Fragment {
         EditText answer3 = getView().findViewById(R.id.edit_answer_3);
         EditText answer4 = getView().findViewById(R.id.edit_answer_4);
 
-        if(intitule.getText().toString().isEmpty()){
-            intitule.setBackgroundColor(Color.RED);
-            isOk = false;
-        }
-
-        if(answer1.getText().toString().isEmpty()){
-            answer1.setBackgroundColor(Color.RED);
-            isOk = false;
-        }
-
-        if(answer2.getText().toString().isEmpty()){
-            answer3.setBackgroundColor(Color.RED);
-            isOk = false;
-        }
-
-        if(answer3.getText().toString().isEmpty()){
-            answer3.setBackgroundColor(Color.RED);
-            isOk = false;
-        }
-
-        if(answer4.getText().toString().isEmpty()){
-            answer4.setBackgroundColor(Color.RED);
+        if(intitule.getText().toString().isEmpty()
+        || answer1.getText().toString().isEmpty()
+        || answer2.getText().toString().isEmpty()
+        || answer3.getText().toString().isEmpty()
+        || answer4.getText().toString().isEmpty()){
             isOk = false;
         }
 
         if(!((RadioButton) getView().findViewById(R.id.radio_button_1)).isChecked()
-                && !((RadioButton) getView().findViewById(R.id.radio_button_2)).isChecked()
-                && !((RadioButton) getView().findViewById(R.id.radio_button_3)).isChecked()
-                && !((RadioButton) getView().findViewById(R.id.radio_button_4)).isChecked()){
+        && !((RadioButton) getView().findViewById(R.id.radio_button_2)).isChecked()
+        && !((RadioButton) getView().findViewById(R.id.radio_button_3)).isChecked()
+        && !((RadioButton) getView().findViewById(R.id.radio_button_4)).isChecked()){
             isOk = false;
         }
 
