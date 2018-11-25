@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,10 @@ import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.model.TypeQuestion;
 
 public class AddQuestionFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_QUESTION = "question";
+    private static final String ARG_EDIT = "edit";
+    private Question edit_question;
+    private Boolean edit = false;
 
     private AddQuestionListener mListener;
 
@@ -29,11 +30,11 @@ public class AddQuestionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static AddQuestionFragment newInstance(String param1, String param2) {
+    public static AddQuestionFragment newInstance(Question question, Boolean edit) {
         AddQuestionFragment fragment = new AddQuestionFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_QUESTION, question);
+        args.putBoolean(ARG_EDIT, edit);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,14 +43,15 @@ public class AddQuestionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            edit_question = getArguments().getParcelable(ARG_QUESTION);
+            edit = getArguments().getBoolean(ARG_EDIT, false);
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_add_question, container, false);
         view.findViewById(R.id.radio_button_1).setOnClickListener(this::radioButtonCheck);
         view.findViewById(R.id.radio_button_2).setOnClickListener(this::radioButtonCheck);
@@ -57,6 +59,25 @@ public class AddQuestionFragment extends Fragment {
         view.findViewById(R.id.radio_button_4).setOnClickListener(this::radioButtonCheck);
 
         view.findViewById(R.id.add_question_button).setOnClickListener(v -> addQuestion());
+
+        if(edit){
+            ((TextView) view.findViewById(R.id.edit_question_intitule)).setText(edit_question.getEntitle());
+            ((TextView) view.findViewById(R.id.edit_answer_1)).setText(edit_question.getProposition(0));
+            ((TextView) view.findViewById(R.id.edit_answer_2)).setText(edit_question.getProposition(1));
+            ((TextView) view.findViewById(R.id.edit_answer_3)).setText(edit_question.getProposition(2));
+            ((TextView) view.findViewById(R.id.edit_answer_4)).setText(edit_question.getProposition(3));
+
+            if(edit_question.getGoodAnswer().equals(edit_question.getProposition(0))){
+                ((RadioButton) view.findViewById(R.id.radio_button_1)).setChecked(true);
+            }else if(edit_question.getGoodAnswer().equals(edit_question.getProposition(1))){
+                ((RadioButton) view.findViewById(R.id.radio_button_2)).setChecked(true);
+            }else if (edit_question.getGoodAnswer().equals(edit_question.getProposition(2))){
+                ((RadioButton) view.findViewById(R.id.radio_button_3)).setChecked(true);
+            }else if (edit_question.getGoodAnswer().equals(edit_question.getProposition(3))){
+                ((RadioButton) view.findViewById(R.id.radio_button_4)).setChecked(true);
+            }
+        }
+
         return view;
     }
 
@@ -107,9 +128,14 @@ public class AddQuestionFragment extends Fragment {
 
             question.setType(TypeQuestion.SIMPLE);
 
-            mListener.saveQuestion(question);
+            if(edit){
+                mListener.editQuestion(question, edit_question.getId());
+                Toast.makeText(getContext(), "Question modifiée", Toast.LENGTH_SHORT).show();
+            }else{
+                mListener.saveQuestion(question);
+                Toast.makeText(getContext(), "Question ajoutée", Toast.LENGTH_SHORT).show();
+            }
 
-            Toast.makeText(getContext(), "Question ajoutée", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(getContext(), "Des champs ne sont pas valides", Toast.LENGTH_SHORT).show();
         }
@@ -143,5 +169,6 @@ public class AddQuestionFragment extends Fragment {
 
     public interface AddQuestionListener {
         void saveQuestion(Question question);
+        void editQuestion(Question question, int id);
     }
 }

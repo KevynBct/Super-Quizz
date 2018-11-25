@@ -149,10 +149,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Question question) {
-        Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
-        questionIntent.putExtra(QuestionActivity.QUESTION, question);
-        questionIntent.putExtra(QuestionActivity.FROM_LIST, true);
-        startActivity(questionIntent);
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, AddQuestionFragment.newInstance(question, true)).commit();
     }
 
     @Override
@@ -160,6 +157,13 @@ public class MainActivity extends AppCompatActivity
         QuestionsDatabaseHelper.getInstance(this).addQuestion(question);
         this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
     }
+
+    @Override
+    public void editQuestion(Question question, int id) {
+        QuestionsDatabaseHelper.getInstance(this).updateQuestion(question, id);
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
+    }
+
 
     @Override
     public void onPlayButton() {
