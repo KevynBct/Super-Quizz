@@ -84,6 +84,9 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
             values.put(ANSWER_4, question.getProposition(3));
             values.put(GOOD_ANSWER, question.getGoodAnswer());
             values.put(QUESTION_TYPE, question.getType().toString());
+            if(question.getId() > 0){
+                values.put(KEY_QUESTION_ID, question.getId());
+            }
 
             db.insertOrThrow(TABLE_QCM, null, values);
             db.setTransactionSuccessful();
@@ -111,6 +114,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
                     newQuestion.addProposition(cursor.getString(cursor.getColumnIndex(ANSWER_3)));
                     newQuestion.addProposition(cursor.getString(cursor.getColumnIndex(ANSWER_4)));
                     newQuestion.setGoodAnswer(cursor.getString(cursor.getColumnIndex(GOOD_ANSWER)));
+                    newQuestion.setId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
                     newQuestion.setType(TypeQuestion.SIMPLE);
 
                     questions.add(newQuestion);
@@ -126,7 +130,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         return questions;
     }
 
-    public int updateQuestion(Question question) {
+    public int updateQuestion(Question question, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -137,9 +141,8 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         values.put(ANSWER_4, question.getProposition(3));
         values.put(GOOD_ANSWER, question.getGoodAnswer());
 
-        // Updating profile picture url for user with that userName
         return db.update(TABLE_QCM, values, KEY_QUESTION_ID + " = ?",
-                new String[] { String.valueOf(question.getId())});
+                new String[] { String.valueOf(id)});
     }
 
     public void deleteAllQuestions() {
