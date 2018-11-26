@@ -44,30 +44,6 @@ public class QuestionActivity extends AppCompatActivity implements QuestionTask.
 
     }
 
-    private void verifyAnswer(Question question, String answer, View button){
-        questionTask.cancel(true);
-        resetColor();
-        if(question.getGoodAnswer().equals(answer)){
-            button.setBackgroundColor(Color.GREEN);
-        }else{
-            button.setBackgroundColor(Color.RED);
-        }
-
-        if(!fromList) {
-            if (question.getGoodAnswer().equals(answer)) {
-                score += question.getPoint();
-            }
-            if (index == QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size() - 1) {
-                Intent resultIntent = new Intent(this, ResultActivity.class);
-                resultIntent.putExtra(ResultActivity.SCORE, score);
-                startActivity(resultIntent);
-            } else {
-                index++;
-                loadContentQuestion();
-            }
-        }
-    }
-
     public  void initActivity(Bundle savedInstanceState){
         if(savedInstanceState != null){
             fromList = savedInstanceState.getBoolean(FROM_LIST);
@@ -91,7 +67,30 @@ public class QuestionActivity extends AppCompatActivity implements QuestionTask.
         answer2.setOnClickListener(v -> verifyAnswer(question, answer2.getText().toString(), v));
         answer3.setOnClickListener(v -> verifyAnswer(question, answer3.getText().toString(), v));
         answer4.setOnClickListener(v -> verifyAnswer(question, answer4.getText().toString(), v));
+    }
 
+    private void verifyAnswer(Question question, String answer, View button){
+        questionTask.cancel(true);
+        resetColor();
+        if(question.getGoodAnswer().equals(answer)){
+            button.setBackgroundColor(Color.GREEN);
+        }else{
+            button.setBackgroundColor(Color.RED);
+        }
+
+        if(!fromList) {
+            if (question.getGoodAnswer().equals(answer)) {
+                score += question.getPoint();
+            }
+            if (index == QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size() - 1) {
+                Intent resultIntent = new Intent(this, ResultActivity.class);
+                resultIntent.putExtra(ResultActivity.SCORE, score);
+                startActivity(resultIntent);
+            } else {
+                index++;
+                loadContentQuestion();
+            }
+        }
     }
 
     @Override
