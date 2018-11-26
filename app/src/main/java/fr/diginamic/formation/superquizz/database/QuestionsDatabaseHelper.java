@@ -90,7 +90,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
             db.insertOrThrow(TABLE_QCM, null, values);
             db.setTransactionSuccessful();
 
-//            APIClient.getInstance().addQuestion(question);
+            APIClient.getInstance().addQuestion(question);
         } catch (Exception e) {
             Log.e("DataBase ERROR", "Error while trying to add question to database");
         } finally {
