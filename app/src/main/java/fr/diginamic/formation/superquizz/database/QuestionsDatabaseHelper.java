@@ -36,7 +36,6 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
     public static synchronized QuestionsDatabaseHelper getInstance(Context context) {
         if (questionsDatabaseHelper == null) {
             questionsDatabaseHelper = new QuestionsDatabaseHelper(context.getApplicationContext());
-            APIClient.getInstance().getQuestions(questionsDatabaseHelper);
         }
         return questionsDatabaseHelper;
     }
@@ -90,6 +89,8 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
 
             db.insertOrThrow(TABLE_QCM, null, values);
             db.setTransactionSuccessful();
+
+//            APIClient.getInstance().addQuestion(question);
         } catch (Exception e) {
             Log.e("DataBase ERROR", "Error while trying to add question to database");
         } finally {
@@ -156,6 +157,10 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         } finally {
             db.endTransaction();
         }
+    }
+
+    public void downloadOnlineQuestions(){
+        APIClient.getInstance().getQuestions(questionsDatabaseHelper);
     }
 
     public void initOnlineQuestions(ArrayList<Question> onlineQuestionsList){

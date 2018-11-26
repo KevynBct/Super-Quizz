@@ -1,5 +1,6 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -58,8 +59,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if(idFragment == 0){
+            if(idFragment == 0) {
                 super.onBackPressed();
+            }else if(idFragment == 1){
+                this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment()).commit();
+                idFragment = 2;
             }else{
                 this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
                 idFragment = 0;
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new AddQuestionFragment()).commit();
             idFragment = 1;
         } else if (id == R.id.nav_list) {
-            this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment()).commit();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment(), "FRAGMENT_LIST_TAG").commit();
             idFragment = 2;
         } else if (id == R.id.nav_score) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
@@ -150,6 +154,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(Question question) {
         this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, AddQuestionFragment.newInstance(question, true)).commit();
+        idFragment = 1;
+    }
+
+    @Override
+    public void onLongClickQuestion(Question question) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Voulez vous supprimer cette question ?")
+                .setTitle("Suppression");
+        builder.setPositiveButton("Oui", (dialog1, which) -> {
+            Toast.makeText(this, "La question "+ String.valueOf(question.getId()) + " est supprimée", Toast.LENGTH_SHORT).show();
+        });
+        builder.setNegativeButton("Non", (dialog1, which) -> Log.i("DIALOG", "Annuler"));
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void updateQuestionsListFragment() {
+        this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
     }
 
     @Override

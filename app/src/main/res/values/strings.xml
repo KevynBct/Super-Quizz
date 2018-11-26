@@ -32,4 +32,5 @@
     <string name="share">Partager</string>
     <string name="send">Envoyer</string>
     <string name="delete">Supprimer</string>
+    <string name="download_questions">Télécharger les questions</string>
 </resources>

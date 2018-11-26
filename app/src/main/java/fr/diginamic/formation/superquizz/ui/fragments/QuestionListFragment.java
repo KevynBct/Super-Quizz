@@ -1,11 +1,16 @@
 package fr.diginamic.formation.superquizz.ui.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -77,9 +82,22 @@ public class QuestionListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_delete) {
-            QuestionsDatabaseHelper.getInstance(getContext()).deleteAllQuestions();
-            adapter.notifyDataSetChanged();
+        if (id == R.id.action_download){
+            QuestionsDatabaseHelper.getInstance(getContext()).downloadOnlineQuestions();
+            SystemClock.sleep(2000);
+            mListener.updateQuestionsListFragment();
+        }else if (id == R.id.action_delete) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Voulez vous supprimer toutes les questions ?")
+                    .setTitle("Suppression");
+            builder.setPositiveButton("Oui", (dialog1, which) -> {
+                QuestionsDatabaseHelper.getInstance(getContext()).deleteAllQuestions();
+                mListener.updateQuestionsListFragment();
+
+            });
+            builder.setNegativeButton("Non", (dialog1, which) -> Log.i("DIALOG", "Annuler"));
+            AlertDialog dialog = builder.create();
+            dialog.show();
             return true;
         }
 
@@ -107,6 +125,8 @@ public class QuestionListFragment extends Fragment {
 
     public interface QuestionListListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Question item);
+        void onListFragmentInteraction(Question question);
+        void onLongClickQuestion(Question question);
+        void updateQuestionsListFragment();
     }
 }
