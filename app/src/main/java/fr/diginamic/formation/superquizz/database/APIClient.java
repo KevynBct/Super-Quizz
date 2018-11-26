@@ -1,11 +1,9 @@
 package fr.diginamic.formation.superquizz.database;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,13 +15,13 @@ import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class APIClient {
 
     private final OkHttpClient client = new OkHttpClient();
-    private final String url = "http://192.168.10.38:3000/questions/";
+    //private final String url = "http://192.168.10.38:3000/questions/";
+    private final String url = "http://192.168.10.204:3000/questions/";
 
     private static APIClient sInstance;
 
@@ -128,20 +126,22 @@ public class APIClient {
 
     }
 
-    public void deleteQuestion(final APIResult<Question> result, Question question) {
-
-        MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
-
-
+    public void deleteQuestion(Question question) {
         Request request = new Request.Builder().url(url + question.getId()).delete().build();
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                throw new RuntimeException("Failed to delete quetion with id:" + question.getId());
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //result.onFailure(e);
+                Log.i("REQUEST_QUESTION", e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("REQUEST_QUESTION", "Question "+String.valueOf(question.getId())+ "supprimée du serveur");
+            }
+        });
+
 
     }
 
