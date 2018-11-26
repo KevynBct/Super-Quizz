@@ -40,6 +40,13 @@ public class QuestionRecyclerViewAdapter extends RecyclerView.Adapter<QuestionRe
                 mListener.onListFragmentInteraction(holder.mItem);
             }
         });
+
+        holder.mView.setOnLongClickListener(v -> {
+            if (null != mListener) {
+                mListener.onLongClickQuestion(holder.mItem);
+            }
+            return true;
+        });
     }
 
     @Override

@@ -83,6 +83,20 @@ public class Question implements Parcelable {
         this.goodAnswer = goodAnswer;
     }
 
+    public int getGoodAnswerNumber(){
+        if(goodAnswer.equals(getProposition(0))){
+            return 1;
+        }else if (goodAnswer.equals(getProposition(1))){
+            return 2;
+        }else if (goodAnswer.equals(getProposition(2))){
+            return 3;
+        }else if((goodAnswer.equals(getProposition(3)))){
+            return 4;
+        }else {
+            return -1;
+        }
+    }
+
     public TypeQuestion getType() {
         return type;
     }

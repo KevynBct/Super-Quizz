@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,6 +77,8 @@ public class AddQuestionFragment extends Fragment {
             }else if (edit_question.getGoodAnswer().equals(edit_question.getProposition(3))){
                 ((RadioButton) view.findViewById(R.id.radio_button_4)).setChecked(true);
             }
+
+            ((FloatingActionButton) view.findViewById(R.id.add_question_button)).setImageDrawable(getResources().getDrawable(R.drawable.ic_edit_white_24dp));
         }
 
         return view;
