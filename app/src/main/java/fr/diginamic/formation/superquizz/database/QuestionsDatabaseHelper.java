@@ -70,7 +70,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         }
     }
 
-    public void addQuestion(Question question) {
+    public void addQuestion(Question question, boolean addOnline) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
@@ -90,7 +90,9 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
             db.insertOrThrow(TABLE_QCM, null, values);
             db.setTransactionSuccessful();
 
-            APIClient.getInstance().addQuestion(question);
+            if(addOnline){
+                APIClient.getInstance().addQuestion(question);
+            }
         } catch (Exception e) {
             Log.e("DataBase ERROR", "Error while trying to add question to database");
         } finally {
@@ -99,7 +101,6 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
     }
 
     public ArrayList<Question> getAllQuestions() {
-
         ArrayList<Question> questions = new ArrayList<>();
 
         String QCM_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_QCM);
@@ -141,6 +142,8 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         values.put(ANSWER_3, question.getProposition(2));
         values.put(ANSWER_4, question.getProposition(3));
         values.put(GOOD_ANSWER, question.getGoodAnswer());
+
+        APIClient.getInstance().updateQuestion(question, id);
 
         return db.update(TABLE_QCM, values, KEY_QUESTION_ID + " = ?",
                 new String[] { String.valueOf(id)});
@@ -188,7 +191,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         }
         for (Question question : onlineQuestionsList) {
             if(!localIdList.contains(question.getId())){
-                addQuestion(question);
+                addQuestion(question, false);
             }
         }
     }

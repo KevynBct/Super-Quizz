@@ -23,7 +23,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:textSize="30sp"/>
-
     </RelativeLayout>
 
 

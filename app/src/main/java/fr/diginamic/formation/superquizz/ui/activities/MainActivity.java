@@ -1,7 +1,10 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.broadcast.NetworkChangeReceiver;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.fragments.AddQuestionFragment;
@@ -26,7 +30,6 @@ import fr.diginamic.formation.superquizz.ui.fragments.ScoreFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.PlayFragmentListener, QuestionListFragment.QuestionListListener, AddQuestionFragment.AddQuestionListener {
     private final String CURRENT_FRAGMENT = "current_fragment";
-    private final String CURRENT_LIST = "current_list";
     private int idFragment = 0;
 
     @Override
@@ -165,7 +168,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void saveQuestion(Question question) {
-        QuestionsDatabaseHelper.getInstance(this).addQuestion(question);
+        QuestionsDatabaseHelper.getInstance(this).addQuestion(question, true);
         this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
     }
 
