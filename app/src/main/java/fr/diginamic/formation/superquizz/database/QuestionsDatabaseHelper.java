@@ -146,6 +146,23 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
                 new String[] { String.valueOf(id)});
     }
 
+    public void deleteQuestion(Question question){
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+
+        String clause = KEY_QUESTION_ID + " = ?";
+        String[] clauseArgs = new String[]{String.valueOf(question.getId())};
+        try {
+            db.delete(TABLE_QCM, clause, clauseArgs);
+            db.setTransactionSuccessful();
+            APIClient.getInstance().deleteQuestion(question);
+        } catch (Exception e) {
+            Log.d("DataBase ERROR", "Error while trying to delete all questions");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void deleteAllQuestions() {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();

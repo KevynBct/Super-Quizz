@@ -163,7 +163,9 @@ public class MainActivity extends AppCompatActivity
         builder.setMessage("Voulez vous supprimer cette question ?")
                 .setTitle("Suppression");
         builder.setPositiveButton("Oui", (dialog1, which) -> {
-            Toast.makeText(this, "La question "+ String.valueOf(question.getId()) + " est supprimée", Toast.LENGTH_SHORT).show();
+            QuestionsDatabaseHelper.getInstance(this).deleteQuestion(question);
+            updateQuestionsListFragment();
+            Toast.makeText(this, "La question "+ question.getEntitle() + " est supprimée", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Non", (dialog1, which) -> Log.i("DIALOG", "Annuler"));
         AlertDialog dialog = builder.create();
