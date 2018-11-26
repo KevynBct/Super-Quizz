@@ -1,12 +1,13 @@
 package fr.diginamic.formation.superquizz.ui.fragments;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
+import fr.diginamic.formation.superquizz.broadcast.NetworkChangeReceiver;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 
@@ -29,11 +31,12 @@ public class QuestionListFragment extends Fragment {
     private int mColumnCount = 1;
     private QuestionListListener mListener;
     private QuestionRecyclerViewAdapter adapter;
+    private boolean networkConnected = true;
+    private Menu menu;
 
     public QuestionListFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static QuestionListFragment newInstance(int columnCount) {
         QuestionListFragment fragment = new QuestionListFragment();
         Bundle args = new Bundle();
@@ -75,6 +78,7 @@ public class QuestionListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.question_list_menu, menu);
+        this.menu = menu;
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -83,9 +87,14 @@ public class QuestionListFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_download){
-            QuestionsDatabaseHelper.getInstance(getContext()).downloadOnlineQuestions();
-            SystemClock.sleep(2000);
-            mListener.updateQuestionsListFragment();
+            if(networkConnected){
+                QuestionsDatabaseHelper.getInstance(getContext()).downloadOnlineQuestions();
+                SystemClock.sleep(2000);
+                mListener.updateQuestionsListFragment();
+            }else{
+                Toast.makeText(getContext(), "Vous n'êtes pas connecté à internet", Toast.LENGTH_SHORT).show();
+            }
+
         }else if (id == R.id.action_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage("Voulez vous supprimer toutes les questions ?")
@@ -114,17 +123,55 @@ public class QuestionListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+
+        registerReceiver();
     }
 
     @Override
     public void onDetach() {
+        try
+        {
+            getActivity().unregisterReceiver(internalNetworkChangeReceiver);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
         super.onDetach();
         mListener = null;
     }
 
+    private void registerReceiver()
+    {
+        try
+        {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(NetworkChangeReceiver.NETWORK_CHANGE_ACTION);
+            getActivity().registerReceiver(internalNetworkChangeReceiver, intentFilter);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    InternalNetworkChangeReceiver internalNetworkChangeReceiver = new InternalNetworkChangeReceiver();
+    class InternalNetworkChangeReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            networkConnected = intent.getBooleanExtra("status", false);
+
+            if(networkConnected){
+                menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_load_white_24dp));
+            }else{
+                menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_load_problem_white_24dp));
+            }
+        }
+    }
+
 
     public interface QuestionListListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Question question);
         void onLongClickQuestion(Question question);
         void updateQuestionsListFragment();

@@ -1,5 +1,6 @@
 package fr.diginamic.formation.superquizz.database;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -90,7 +91,7 @@ public class APIClient {
         }
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        // put your json here
+
         RequestBody body = RequestBody.create(JSON, jsonObject.toString());
         Request request = new Request.Builder()
                 .header("Content-Type", "application/json")
@@ -131,7 +132,42 @@ public class APIClient {
 
     }
 
-    //TODO : Faire un update
+    public void updateQuestion(Question question, int id){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("title",question.getEntitle());
+            jsonObject.put("answer_1", question.getProposition(0));
+            jsonObject.put("answer_2", question.getProposition(1));
+            jsonObject.put("answer_3", question.getProposition(2));
+            jsonObject.put("answer_4", question.getProposition(3));
+            jsonObject.put("correct_answer", question.getGoodAnswerNumber());
+            jsonObject.put("author", "Kevyn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+        RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+        Request request = new Request.Builder()
+                .header("Content-Type", "application/json")
+                .url(url+id)
+                .put(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //result.onFailure(e);
+                Log.i("REQUEST_QUESTION", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i("REQUEST_QUESTION", "Question modifée sur le serveur");
+            }
+        });
+    }
 
     public interface APIResult<T> {
         void onFailure(IOException e);
