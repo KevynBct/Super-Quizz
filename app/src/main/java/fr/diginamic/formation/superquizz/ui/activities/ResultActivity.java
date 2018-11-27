@@ -17,6 +17,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
@@ -35,6 +36,9 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         setTitle(getString(R.string.result));
 
@@ -71,13 +75,19 @@ public class ResultActivity extends AppCompatActivity {
         l.setTextSize(20f);
         l.setTextColor(Color.WHITE);
 
-        // entry label styling
         chart.setEntryLabelTextSize(0f);
 
         updateChart();
 
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
     private void updateChart() {
         int correctAnswersCount = userScore;
@@ -109,7 +119,6 @@ public class ResultActivity extends AppCompatActivity {
         data.setValueTextColor(Color.WHITE);
         chart.setData(data);
 
-        // undo all highlights
         chart.highlightValues(null);
 
         chart.invalidate();

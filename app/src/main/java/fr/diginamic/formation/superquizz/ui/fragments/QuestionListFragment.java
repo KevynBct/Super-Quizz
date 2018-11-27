@@ -98,19 +98,19 @@ public class QuestionListFragment extends Fragment {
                 SystemClock.sleep(2000);
                 mListener.updateQuestionsListFragment();
             }else{
-                Toast.makeText(getContext(), "Vous n'êtes pas connecté à internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.no_connexion), Toast.LENGTH_SHORT).show();
             }
 
         }else if (id == R.id.action_delete) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Voulez vous supprimer toutes les questions ?")
-                    .setTitle("Suppression");
-            builder.setPositiveButton("Oui", (dialog1, which) -> {
+            builder.setMessage(getString(R.string.ask_delete_all_questions))
+                    .setTitle(getString(R.string.deleting));
+            builder.setPositiveButton(getString(R.string.yes), (dialog1, which) -> {
                 QuestionsDatabaseHelper.getInstance(getContext()).deleteAllQuestions();
                 mListener.updateQuestionsListFragment();
 
             });
-            builder.setNegativeButton("Non", (dialog1, which) -> Log.i("DIALOG", "Annuler"));
+            builder.setNegativeButton(getString(R.string.no), (dialog1, which) -> Log.i("DIALOG", getString(R.string.cancel)));
             AlertDialog dialog = builder.create();
             dialog.show();
             return true;
@@ -166,7 +166,7 @@ public class QuestionListFragment extends Fragment {
     {
         @Override
         public void onReceive(Context context, Intent intent) {
-            networkConnected = intent.getBooleanExtra("status", false);
+            networkConnected = intent.getBooleanExtra(NetworkChangeReceiver.NETWORK_STATUS, false);
 
             if(networkConnected){
                 menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_load_white_24dp));

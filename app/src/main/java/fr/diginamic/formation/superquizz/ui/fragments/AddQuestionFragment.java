@@ -26,7 +26,6 @@ public class AddQuestionFragment extends Fragment {
     private AddQuestionListener mListener;
 
     public AddQuestionFragment() {
-        // Required empty public constructor
     }
 
     public static AddQuestionFragment newInstance(Question question, Boolean edit) {
@@ -135,14 +134,14 @@ public class AddQuestionFragment extends Fragment {
 
             if(edit){
                 mListener.editQuestion(question, edit_question.getId());
-                Toast.makeText(getContext(), "Question modifiée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.modified_question), Toast.LENGTH_SHORT).show();
             }else{
                 mListener.saveQuestion(question);
-                Toast.makeText(getContext(), "Question ajoutée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.added_question), Toast.LENGTH_SHORT).show();
             }
 
         }else {
-            Toast.makeText(getContext(), "Des champs ne sont pas valides", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.wrong_fields), Toast.LENGTH_SHORT).show();
         }
     }
 

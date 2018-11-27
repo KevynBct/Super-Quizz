@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
@@ -17,6 +19,7 @@ import fr.diginamic.formation.superquizz.ui.thread.QuestionTask;
 public class QuestionActivity extends AppCompatActivity implements QuestionTask.QuestionTaskListener{
     private final String INDEX = "index";
     private final String SCORE = "score";
+    private ArrayList<Question> questionsList;
     private Question question;
     private Button answer1;
     private Button answer2;
@@ -43,9 +46,9 @@ public class QuestionActivity extends AppCompatActivity implements QuestionTask.
             index = savedInstanceState.getInt(INDEX);
             score = savedInstanceState.getInt(SCORE);
         }
-
-        size = QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size();
-        question = QuestionsDatabaseHelper.getInstance(this).getAllQuestions().get(index);
+        questionsList = QuestionsDatabaseHelper.getInstance(this).getAllQuestions();
+        size = questionsList.size();
+        question = questionsList.get(index);
 
         answer1 = findViewById(R.id.answer_1);
         answer2 = findViewById(R.id.answer_2);
@@ -66,7 +69,7 @@ public class QuestionActivity extends AppCompatActivity implements QuestionTask.
         if (question.getGoodAnswer().equals(answer)) {
             score += question.getPoint();
         }
-        if (index == QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size() - 1) {
+        if (index == questionsList.size() - 1) {
             Intent resultIntent = new Intent(this, ResultActivity.class);
             resultIntent.putExtra(ResultActivity.SCORE, score);
             startActivity(resultIntent);
@@ -87,7 +90,7 @@ public class QuestionActivity extends AppCompatActivity implements QuestionTask.
         int current = index + 1;
         setTitle("Question " + current + "/" + size);
 
-        question = QuestionsDatabaseHelper.getInstance(this).getAllQuestions().get(index);
+        question = questionsList.get(index);
 
 
         ((TextView) findViewById(R.id.question)).setText(question.getEntitle());
@@ -114,7 +117,7 @@ public class QuestionActivity extends AppCompatActivity implements QuestionTask.
        ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(100 - count);
 
        if(count == 100){
-           if (index == QuestionsDatabaseHelper.getInstance(this).getAllQuestions().size() - 1) {
+           if (index == questionsList.size() - 1) {
                Intent resultIntent = new Intent(this, ResultActivity.class);
                resultIntent.putExtra(ResultActivity.SCORE, score);
                startActivity(resultIntent);

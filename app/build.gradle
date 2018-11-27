@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Diginamic'
+            keyPassword 'formationDTA'
+            storeFile file('/Users/formation9/AndroidStudioProjects/SuperQuizz/android_super_quizz.jks')
+            storePassword 'formationDTA'
+        }
+    }
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
@@ -36,7 +44,7 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:design:28.0.0'

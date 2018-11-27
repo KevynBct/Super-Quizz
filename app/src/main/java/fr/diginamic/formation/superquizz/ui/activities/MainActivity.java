@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_list) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment(), "FRAGMENT_LIST_TAG").commit();
             idFragment = 2;
+        } else if  (id == R.id.nav_preferences){
+            Intent intentPreferences = new Intent(getApplicationContext(), PreferencesActivity.class);
+            startActivity(intentPreferences);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -139,14 +142,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLongClickQuestion(Question question) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Voulez vous supprimer cette question ?")
-                .setTitle("Suppression");
-        builder.setPositiveButton("Oui", (dialog1, which) -> {
+        builder.setMessage(getString(R.string.ask_delete_question))
+                .setTitle(getString(R.string.deleting));
+        builder.setPositiveButton(getString(R.string.yes), (dialog1, which) -> {
             QuestionsDatabaseHelper.getInstance(this).deleteQuestion(question);
             updateQuestionsListFragment();
-            Toast.makeText(this, "La question "+ question.getEntitle() + " est supprimée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.the_answer)+ question.getEntitle() + getString(R.string.is_deleted), Toast.LENGTH_SHORT).show();
         });
-        builder.setNegativeButton("Non", (dialog1, which) -> Log.i("DIALOG", "Annuler"));
+        builder.setNegativeButton(getString(R.string.no), (dialog1, which) -> Log.i("DIALOG", getString(R.string.cancel)));
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -160,7 +163,6 @@ public class MainActivity extends AppCompatActivity
     public void saveQuestion(Question question) {
         QuestionsDatabaseHelper.getInstance(this).addQuestion(question, true);
         this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, QuestionListFragment.newInstance(1)).commit();
-        navigationView.getMenu().getItem(2).setChecked(true);
     }
 
     @Override
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPlayButton() {
         if(QuestionsDatabaseHelper.getInstance(this).getAllQuestions().isEmpty()){
-            Toast.makeText(this, "Il n'y a aucune question", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_question), Toast.LENGTH_SHORT).show();
         }else {
             Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
             startActivity(questionIntent);
