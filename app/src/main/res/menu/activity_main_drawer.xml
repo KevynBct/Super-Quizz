@@ -16,11 +16,6 @@
             android:id="@+id/nav_list"
             android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/questions_list" />
-
-        <item
-            android:id="@+id/nav_score"
-            android:icon="@drawable/ic_score_black_24dp"
-            android:title="@string/score" />
     </group>
 
 </menu>

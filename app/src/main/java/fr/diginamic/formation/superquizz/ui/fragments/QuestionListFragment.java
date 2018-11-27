@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import fr.diginamic.formation.superquizz.R;
 import fr.diginamic.formation.superquizz.broadcast.NetworkChangeReceiver;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
@@ -33,6 +35,7 @@ public class QuestionListFragment extends Fragment {
     private QuestionRecyclerViewAdapter adapter;
     private boolean networkConnected = true;
     private Menu menu;
+    private ArrayList<Question> questionsList;
 
     public QuestionListFragment() {
     }
@@ -52,6 +55,7 @@ public class QuestionListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        questionsList = QuestionsDatabaseHelper.getInstance(getContext()).getAllQuestions();
     }
 
     @Override
@@ -59,9 +63,11 @@ public class QuestionListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_list, container, false);
 
+        getActivity().setTitle(getString(R.string.questions_list));
+
         setHasOptionsMenu(true);
 
-        if (view instanceof RecyclerView) {
+        if (view != null && view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
@@ -69,7 +75,7 @@ public class QuestionListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = new QuestionRecyclerViewAdapter(QuestionsDatabaseHelper.getInstance(getContext()).getAllQuestions(), mListener);
+            adapter = new QuestionRecyclerViewAdapter(questionsList, mListener);
             recyclerView.setAdapter(adapter);
         }
         return view;

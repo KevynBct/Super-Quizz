@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Super Quizz</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -19,8 +18,9 @@
     <string name="proposition_2">Proposition 2</string>
     <string name="proposition_3">Proposition 3</string>
     <string name="proposition_4">Proposition 4</string>
-    <string name="good_answer">Good answer :</string>
-    <string name="score">Score</string>
+    <string name="good_answer">Good answer</string>
+    <string name="wrong_answer">Wrong answer</string>
+    <string name="result">Result</string>
     <string name="question">Question</string>
     <string name="answer_1">Answer 1</string>
     <string name="answer_2">Answer 2</string>
@@ -32,6 +32,8 @@
     <string name="communicate">Communicate</string>
     <string name="share">Share</string>
     <string name="send">Send</string>
-    <string name="delete">Supprimer</string>
-    <string name="download_questions">Télécharger les questions</string>
+    <string name="delete">Delete</string>
+    <string name="download_questions">Download questions</string>
+    <string name="add_question">Ajouter une question</string>
+    <string name="edit_question">Edition de question</string>
 </resources>

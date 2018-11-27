@@ -132,6 +132,56 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         return questions;
     }
 
+    public ArrayList<Question> getAllQuestionsNotAnswered() {
+        ArrayList<Question> questions = new ArrayList<>();
+
+        String QCM_SELECT_QUERY = String.format("SELECT * FROM %s WHERE %s IS NULL", TABLE_QCM, USER_ANSWER);
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(QCM_SELECT_QUERY, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Question newQuestion = new Question(cursor.getString(cursor.getColumnIndex(ENTITLE)));
+                    newQuestion.addProposition(cursor.getString(cursor.getColumnIndex(ANSWER_1)));
+                    newQuestion.addProposition(cursor.getString(cursor.getColumnIndex(ANSWER_2)));
+                    newQuestion.addProposition(cursor.getString(cursor.getColumnIndex(ANSWER_3)));
+                    newQuestion.addProposition(cursor.getString(cursor.getColumnIndex(ANSWER_4)));
+                    newQuestion.setGoodAnswer(cursor.getString(cursor.getColumnIndex(GOOD_ANSWER)));
+                    newQuestion.setId(cursor.getInt(cursor.getColumnIndex(KEY_QUESTION_ID)));
+                    newQuestion.setType(TypeQuestion.SIMPLE);
+
+                    questions.add(newQuestion);
+                } while(cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e("DataBase ERROR", "Error while trying to get questions from database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return questions;
+    }
+
+    public int updateUserAnswer(Question question, String userAnswer,  int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ENTITLE, question.getEntitle());
+        values.put(ANSWER_1, question.getProposition(0));
+        values.put(ANSWER_2, question.getProposition(1));
+        values.put(ANSWER_3, question.getProposition(2));
+        values.put(ANSWER_4, question.getProposition(3));
+        values.put(USER_ANSWER, userAnswer);
+        values.put(GOOD_ANSWER, question.getGoodAnswer());
+
+        APIClient.getInstance().updateQuestion(question, id);
+
+        return db.update(TABLE_QCM, values, KEY_QUESTION_ID + " = ?",
+                new String[] { String.valueOf(id)});
+    }
+
     public int updateQuestion(Question question, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
