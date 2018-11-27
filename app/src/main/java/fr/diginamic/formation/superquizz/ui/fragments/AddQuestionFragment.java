@@ -26,7 +26,6 @@ public class AddQuestionFragment extends Fragment {
     private AddQuestionListener mListener;
 
     public AddQuestionFragment() {
-        // Required empty public constructor
     }
 
     public static AddQuestionFragment newInstance(Question question, Boolean edit) {
@@ -51,6 +50,8 @@ public class AddQuestionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        getActivity().setTitle(R.string.add_question);
+
         View view = inflater.inflate(R.layout.fragment_add_question, container, false);
         view.findViewById(R.id.radio_button_1).setOnClickListener(this::radioButtonCheck);
         view.findViewById(R.id.radio_button_2).setOnClickListener(this::radioButtonCheck);
@@ -60,6 +61,8 @@ public class AddQuestionFragment extends Fragment {
         view.findViewById(R.id.add_question_button).setOnClickListener(v -> addQuestion());
 
         if(edit){
+            getActivity().setTitle(R.string.edit_question);
+
             ((TextView) view.findViewById(R.id.edit_question_intitule)).setText(edit_question.getEntitle());
             ((TextView) view.findViewById(R.id.edit_answer_1)).setText(edit_question.getProposition(0));
             ((TextView) view.findViewById(R.id.edit_answer_2)).setText(edit_question.getProposition(1));
@@ -131,14 +134,14 @@ public class AddQuestionFragment extends Fragment {
 
             if(edit){
                 mListener.editQuestion(question, edit_question.getId());
-                Toast.makeText(getContext(), "Question modifiée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.modified_question), Toast.LENGTH_SHORT).show();
             }else{
                 mListener.saveQuestion(question);
-                Toast.makeText(getContext(), "Question ajoutée", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.added_question), Toast.LENGTH_SHORT).show();
             }
 
         }else {
-            Toast.makeText(getContext(), "Des champs ne sont pas valides", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.wrong_fields), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -150,11 +153,11 @@ public class AddQuestionFragment extends Fragment {
         EditText answer3 = getView().findViewById(R.id.edit_answer_3);
         EditText answer4 = getView().findViewById(R.id.edit_answer_4);
 
-        if(intitule.getText().toString().isEmpty()
-        || answer1.getText().toString().isEmpty()
-        || answer2.getText().toString().isEmpty()
-        || answer3.getText().toString().isEmpty()
-        || answer4.getText().toString().isEmpty()){
+        if(intitule.getText().toString().trim().isEmpty()
+        || answer1.getText().toString().trim().isEmpty()
+        || answer2.getText().toString().trim().isEmpty()
+        || answer3.getText().toString().trim().isEmpty()
+        || answer4.getText().toString().trim().isEmpty()){
             isOk = false;
         }
 

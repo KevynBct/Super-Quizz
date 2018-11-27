@@ -2,9 +2,11 @@ package fr.diginamic.formation.superquizz.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.IOException;
@@ -12,17 +14,14 @@ import java.util.ArrayList;
 
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.model.TypeQuestion;
+import fr.diginamic.formation.superquizz.ui.activities.PreferencesActivity;
 
 public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClient.APIResult<ArrayList<Question>> {
     private static QuestionsDatabaseHelper questionsDatabaseHelper;
-    // Database Info
+    private static SharedPreferences mSettings;
     private static final String DATABASE_NAME = "questionsDatabase";
     private static final int DATABASE_VERSION = 1;
-
-    // Table Names
     private static final String TABLE_QCM = "qcm";
-
-    // Post Table Columns
     private static final String KEY_QUESTION_ID = "question_id";
     private static final String ENTITLE = "question";
     private static final String ANSWER_1 = "answer_1";
@@ -36,6 +35,7 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
     public static synchronized QuestionsDatabaseHelper getInstance(Context context) {
         if (questionsDatabaseHelper == null) {
             questionsDatabaseHelper = new QuestionsDatabaseHelper(context.getApplicationContext());
+            mSettings = PreferenceManager.getDefaultSharedPreferences(context);
         }
         return questionsDatabaseHelper;
     }
@@ -90,8 +90,11 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
             db.insertOrThrow(TABLE_QCM, null, values);
             db.setTransactionSuccessful();
 
-            if(addOnline){
-                APIClient.getInstance().addQuestion(question);
+            boolean onlinePreference = mSettings.getBoolean(PreferencesActivity.SAVE_ONLINE, true);
+            if(onlinePreference){
+                if(addOnline){
+                    APIClient.getInstance().addQuestion(question);
+                }
             }
         } catch (Exception e) {
             Log.e("DataBase ERROR", "Error while trying to add question to database");
@@ -143,7 +146,10 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         values.put(ANSWER_4, question.getProposition(3));
         values.put(GOOD_ANSWER, question.getGoodAnswer());
 
-        APIClient.getInstance().updateQuestion(question, id);
+        boolean onlinePreference = mSettings.getBoolean(PreferencesActivity.SAVE_ONLINE, true);
+        if(onlinePreference){
+            APIClient.getInstance().updateQuestion(question, id);
+        }
 
         return db.update(TABLE_QCM, values, KEY_QUESTION_ID + " = ?",
                 new String[] { String.valueOf(id)});
@@ -158,7 +164,10 @@ public class QuestionsDatabaseHelper extends SQLiteOpenHelper implements APIClie
         try {
             db.delete(TABLE_QCM, clause, clauseArgs);
             db.setTransactionSuccessful();
-            APIClient.getInstance().deleteQuestion(question);
+            boolean onlinePreference = mSettings.getBoolean(PreferencesActivity.SAVE_ONLINE, true);
+            if(onlinePreference){
+                APIClient.getInstance().deleteQuestion(question);
+            }
         } catch (Exception e) {
             Log.d("DataBase ERROR", "Error while trying to delete all questions");
         } finally {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Super Quizz</string>
+    <string name="super_quizz_title">SuperQuizz</string>
     <string name="navigation_drawer_open">Ouvrir le menu d\'application</string>
     <string name="navigation_drawer_close">Fermer le menu d\'application</string>
     <string name="nav_header_title">Android Studio</string>
@@ -12,25 +12,40 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_question_text">Ajoutez une question</string>
+    <string name="add_question">Ajoutez une question</string>
+    <string name="questions_list">Liste des questions</string>
+    <string name="delete_question">Supprimer une question</string>
+    <string name="edit_question">Edition de question</string>
     <string name="play">Jouer</string>
     <string name="proposition_1">Proposition 1</string>
     <string name="proposition_2">Proposition 2</string>
     <string name="proposition_3">Proposition 3</string>
     <string name="proposition_4">Proposition 4</string>
-    <string name="good_answer">Bonne réponse :</string>
-    <string name="score">Score</string>
+    <string name="good_answer">Bonnes réponses</string>
+    <string name="wrong_answer">Mauvaises réponses</string>
+    <string name="result">Résultat</string>
     <string name="question">Question</string>
     <string name="answer_1">Réponse 1</string>
     <string name="answer_2">Réponse 2</string>
     <string name="answer_3">Réponse 3</string>
     <string name="answer_4">Réponse 4</string>
     <string name="play_quizz">Jouer au quizz</string>
-    <string name="questions_list">Liste des questions</string>
-    <string name="delete_question">Supprimer une question</string>
-    <string name="communicate">Communiquer</string>
-    <string name="share">Partager</string>
-    <string name="send">Envoyer</string>
     <string name="delete">Supprimer</string>
     <string name="download_questions">Télécharger les questions</string>
+    <string name="settings">Paramètres</string>
+    <string name="preferences">Préférences</string>
+    <string name="save_online">Sauvegarder sur le serveur </string>
+    <string name="ask_delete_question">Voulez vous supprimer cette question ?</string>
+    <string name="the_answer">La question</string>
+    <string name="is_deleted">est supprimée</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="deleting">Suppression</string>
+    <string name="cancel">Annuler</string>
+    <string name="no_question">Il n\'y a aucune question</string>
+    <string name="modified_question">Question modifiée</string>
+    <string name="added_question">Question ajoutée</string>
+    <string name="wrong_fields">Des champs ne sont pas valides</string>
+    <string name="no_connexion">Vous n\'êtes pas connecté à internet</string>
+    <string name="ask_delete_all_questions">Voulez vous supprimer toutes les questions ?</string>
 </resources>

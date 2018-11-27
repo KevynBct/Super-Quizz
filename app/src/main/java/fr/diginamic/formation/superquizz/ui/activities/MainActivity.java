@@ -1,10 +1,7 @@
 package fr.diginamic.formation.superquizz.ui.activities;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -19,18 +16,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import fr.diginamic.formation.superquizz.R;
-import fr.diginamic.formation.superquizz.broadcast.NetworkChangeReceiver;
 import fr.diginamic.formation.superquizz.database.QuestionsDatabaseHelper;
 import fr.diginamic.formation.superquizz.model.Question;
 import fr.diginamic.formation.superquizz.ui.fragments.AddQuestionFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.PlayFragment;
 import fr.diginamic.formation.superquizz.ui.fragments.QuestionListFragment;
-import fr.diginamic.formation.superquizz.ui.fragments.ScoreFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PlayFragment.PlayFragmentListener, QuestionListFragment.QuestionListListener, AddQuestionFragment.AddQuestionListener {
     private final String CURRENT_FRAGMENT = "current_fragment";
     private int idFragment = 0;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +41,10 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        QuestionsDatabaseHelper.getInstance(this).downloadOnlineQuestions();
         QuestionsDatabaseHelper.getInstance(this).getAllQuestions();
 
         initActivity(savedInstanceState);
@@ -90,13 +87,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_list) {
             this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new QuestionListFragment(), "FRAGMENT_LIST_TAG").commit();
             idFragment = 2;
-        } else if (id == R.id.nav_score) {
-            this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
-            idFragment = 4;
+        } else if  (id == R.id.nav_preferences){
+            Intent intentPreferences = new Intent(getApplicationContext(), PreferencesActivity.class);
+            startActivity(intentPreferences);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -124,11 +122,6 @@ public class MainActivity extends AppCompatActivity
                     idFragment = 2;
                     break;
                 }
-                case 4 : {
-                    this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new ScoreFragment()).commit();
-                    idFragment = 4;
-                    break;
-                }
                 default: {
                     this.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentLayout, new PlayFragment()).commit();
                     break;
@@ -149,14 +142,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLongClickQuestion(Question question) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Voulez vous supprimer cette question ?")
-                .setTitle("Suppression");
-        builder.setPositiveButton("Oui", (dialog1, which) -> {
+        builder.setMessage(getString(R.string.ask_delete_question))
+                .setTitle(getString(R.string.deleting));
+        builder.setPositiveButton(getString(R.string.yes), (dialog1, which) -> {
             QuestionsDatabaseHelper.getInstance(this).deleteQuestion(question);
             updateQuestionsListFragment();
-            Toast.makeText(this, "La question "+ question.getEntitle() + " est supprimée", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.the_answer)+ question.getEntitle() + getString(R.string.is_deleted), Toast.LENGTH_SHORT).show();
         });
-        builder.setNegativeButton("Non", (dialog1, which) -> Log.i("DIALOG", "Annuler"));
+        builder.setNegativeButton(getString(R.string.no), (dialog1, which) -> Log.i("DIALOG", getString(R.string.cancel)));
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -182,7 +175,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPlayButton() {
         if(QuestionsDatabaseHelper.getInstance(this).getAllQuestions().isEmpty()){
-            Toast.makeText(this, "Il n'y a aucune question", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_question), Toast.LENGTH_SHORT).show();
         }else {
             Intent questionIntent = new Intent(getApplicationContext(), QuestionActivity.class);
             startActivity(questionIntent);

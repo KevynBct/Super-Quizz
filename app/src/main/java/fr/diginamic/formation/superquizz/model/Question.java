@@ -36,13 +36,6 @@ public class Question implements Parcelable {
         }
     };
 
-    public Boolean verifierReponse(String reponse){
-        if (this.goodAnswer.equals(reponse))
-            return true;
-        else
-            return false;
-    }
-
     public void addProposition(String proposition) {
         this.propositions.add(proposition);
     }
@@ -59,20 +52,8 @@ public class Question implements Parcelable {
         return entitle;
     }
 
-    public void setEntitle(String entitle) {
-        this.entitle = entitle;
-    }
-
-    public ArrayList<String> getPropositionsList() {
-        return propositions;
-    }
-
     public String getProposition(int index){
         return propositions.get(index);
-    }
-
-    public void setPropositions(ArrayList<String> propositions) {
-        this.propositions = propositions;
     }
 
     public String getGoodAnswer() {
